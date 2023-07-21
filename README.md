@@ -210,3 +210,34 @@ Thus Paxos and Raft are equally susceptible to a group of malicious nodes if tho
 | Corfu: A shared log design that can be used as the foundation for building distributed systems. It uses a variant of Paxos. | RethinkDB: This open-source, NoSQL database that supports JSON documents also uses Raft for consensus. |
 | IBM's General Parallel File System (GPFS): This high-performance distributed file system uses Paxos for metadata replication. | dqlite: This is a lightweight, distributed relational database that uses Raft for replication. |
 | Boxwood: A project by Microsoft Research that provides a high-level distributed programming abstraction, uses Paxos for replication. | InfluxDB: An open-source time series database, uses Raft for data replication. |
+
+# History:
+
+## Paxos
+The story of Paxos, one of the most influential consensus protocols in distributed systems, begins with Leslie Lamport, a computer scientist who had already made significant contributions to the field, including the development of the Lamport timestamp. Lamport's work on Paxos began in the late 1980s, inspired by the challenges of fault tolerance in distributed systems. He sought to create a protocol that could achieve consensus even in the presence of failures, which was no small task.
+
+In 1989, Lamport shared a draft paper titled "The Part-Time Parliament" with colleagues. The paper used the fictional example of a Greek island's parliamentary system, where legislators (i.e., processes in a distributed system) had to agree on laws (i.e., values), despite being occasionally absent (i.e., failing). Lamport's paper was unique and controversial for its time, not only because of the complexity of the algorithm but also due to its unusual presentation style. The analogy of the Greek parliament, the island of Paxos, and the use of terms such as "decrees", "ballots", and "legislators" made the paper notoriously difficult to understand.
+
+Due to the complexity of the paper and its cryptic analogy, it was not widely understood or appreciated at first. The paper was rejected by several conferences, and it wasn't until 1998, nearly a decade later, that a simplified version of the paper was published in the ACM Transactions on Computer Systems. This version stripped away the Greek parliament analogy and presented the protocol in more conventional terms, which allowed the computer science community to fully appreciate Paxos for what it was: a significant breakthrough in distributed systems.
+
+Since its eventual publication, Paxos has become a cornerstone of distributed systems design. It is recognized for its efficiency and safety guarantees in the face of network partitions and process failures. The Paxos family of algorithms has grown to include many variants and optimizations, such as Multi-Paxos, Fast Paxos, and Cheap Paxos. These variants address different trade-offs in the protocol, such as the number of communication rounds, the number of processes that need to be involved in a decision, and the use of different quorum sizes and configurations.
+
+Despite its theoretical elegance and practical use, Paxos is known for being hard to understand and even harder to implement correctly. This complexity has motivated the development of alternative consensus protocols, most notably Raft, which was explicitly designed to be as understandable and implementable as Paxos, but with a simpler conceptual model.
+
+In the industry, Paxos and its variants have found use in many large-scale distributed systems. Google's Chubby lock service, which provides coordination services for its distributed systems, uses Paxos for replication. Apache's ZooKeeper, a service for distributed coordination, uses a Paxos-inspired protocol called ZAB. Paxos has also influenced the design of other distributed consensus protocols, such as Viewstamped Replication and Zab.
+
+## Raft
+The journey of Raft, a consensus algorithm known for its simplicity and understandability, started relatively recently. The algorithm was developed by Diego Ongaro and John Ousterhout at Stanford University and was introduced in Ongaro's 2014 doctoral dissertation, "Consensus: Bridging Theory and Practice".
+
+The development of Raft was driven by the complexity of existing consensus algorithms, most notably Paxos. While Paxos was well-established and had strong theoretical foundations, its complexity made it hard to understand, teach, and implement correctly. Ongaro and Ousterhout believed that there was a need for a consensus algorithm that could be easily understood and implemented without sacrificing the essential features of safety and reliability.
+
+Raft was designed to be as efficient as Paxos, but with a stronger emphasis on understandability. It does this by dividing the problem into relatively independent subproblems and solving each one in the most straightforward way possible. This separation of concerns makes the protocol easier to comprehend as a whole, and each part is simple to understand in isolation.
+
+The first publication about Raft was a paper titled "In Search of an Understandable Consensus Algorithm" presented at the 2014 USENIX Annual Technical Conference. The paper was met with significant interest and enthusiasm from both the academic community and industry. It was awarded the conference's Best Paper Award, and Raft has since become a popular topic of study in distributed systems courses.
+
+Since its introduction, Raft has seen extensive use in industry and open source projects. It has been implemented in various programming languages and used in various systems, such as etcd, a distributed key-value store from CoreOS; Consul, a service mesh solution from HashiCorp; and TiKV, a distributed transactional key-value database.
+
+Raft has also inspired further research and led to the development of various optimizations and extensions. For example, the Raft Refloated paper by Heidi Howard and Richard Mortier presents a more intuitive model for understanding and teaching Raft. Other works have explored the integration of Raft with sharding techniques for scalability, or extensions to support multi-datacenter deployments.
+
+The creation of Raft marked a significant point in the development of consensus algorithms. By prioritizing understandability and simplicity while ensuring safety and liveness, Raft has become a popular choice for distributed systems needing a consensus algorithm. It demonstrates that it is possible to achieve theoretical soundness without sacrificing understandability, a principle that continues to guide research and development in distributed systems.
+
