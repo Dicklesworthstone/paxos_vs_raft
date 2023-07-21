@@ -77,6 +77,8 @@ ______________________________
 | Reconciliation after failure | If a proposer's 'prepare' request fails because acceptors have accepted another proposal, the proposer can issue a new 'prepare' request with a higher number and the value of the highest-numbered proposal from the responses. | The leader handles inconsistencies between its log and those of followers by forcing followers to duplicate its own log entries. |
 | Reconciliation after restart | Paxos does not inherently handle restarts. It relies on external mechanisms to store and retrieve state. | Raft leaders maintain a 'nextIndex' for each follower, which is the index of the next log entry the leader will send to that follower. When a leader restarts, it initializes all nextIndex values to the last index in its log. |
 
+______________________________
+
 
 # Background
 
@@ -151,3 +153,60 @@ Thus Paxos and Raft are equally susceptible to a group of malicious nodes if tho
 | 8 | Works with any number of nodes. Paxos doesn't require a fixed number of nodes. | Requires careful tuning. To get the best performance from Paxos, careful tuning is often necessary. | Works best with a fixed number of nodes. Raft works best when the number of nodes is known and fixed. | Does not guarantee linearizability. Raft does not guarantee linearizability if the client talks to the follower. |
 | 9 | Supports many proposers. Paxos can work with many proposers, which can be useful in certain scenarios. | Requires careful handling of failure scenarios. Paxos requires careful handling of failure scenarios to ensure progress. | Progress even in failure scenarios. Raft's leader-based approach allows progress even in some failure scenarios. | Requires more resources for a given level of fault tolerance. Raft typically requires more resources to achieve the same level of fault tolerance as Paxos. |
 | 10 | Can handle message loss. Paxos is resilient to message loss. | Requires majority of nodes to be operational. Paxos requires a majority of nodes to be operational to make progress. | Requires fewer messages for consensus. Raft requires fewer messages to reach consensus than Paxos. | Requires regular leader heartbeats. Raft requires regular leader heartbeats, which can increase network load. |
+
+# Implementations:
+
+**Paxos Implementations:**
+
+| Name | Year First Released | Implementation Language | Level of Maturity |
+|------|---------------------|-------------------------|-------------------|
+| Google's Chubby | 2006 | C++ | Mature |
+| Apache ZooKeeper | 2008 | Java | Mature |
+| Libpaxos | 2010 | C | Mature |
+| JPaxos | 2012 | Java | Mature |
+| Microsoft's PAXOS.NET | 2014 | C# | Mature |
+| paxos-go | 2015 | Go | Less Mature |
+| rust-paxos | 2017 | Rust | Less Mature |
+
+
+**Raft Implementations:**
+
+| Name | Year First Released | Implementation Language | Level of Maturity |
+|------|---------------------|-------------------------|-------------------|
+| etcd | 2013 | Go | Mature |
+| Consul | 2014 | Go | Mature |
+| LogCabin | 2014 | C++ | Mature |
+| Dragonboat | 2018 | Go | Mature |
+| raft-rs | 2018 | Rust | Mature |
+| Barge | 2015 | Java | Mature |
+| raft-go | 2014 | Go | Less Mature |
+
+
+# Variants of Each:
+
+| Paxos Variants | Description |
+|----------------|-------------|
+| Multi-Paxos | An optimization to the basic Paxos protocol that designates one node as a leader to avoid the need for a new leader election for each consensus decision. This makes consensus more efficient. |
+| Fast Paxos | A variant of Paxos that reduces message latency in the common case when there is no contention, but requires more processes. |
+| Generalized Paxos | An extension to Paxos that allows consensus to be reached on a set of commands rather than a single command, increasing throughput. |
+| Cheap Paxos | A variant of Paxos designed for environments where the number of replicas is large but only a small number are needed to tolerate failures. It reduces the cost by requiring fewer servers to participate in the normal case. |
+
+| Raft Variants | Description |
+|---------------|-------------|
+| Multi-Raft | An optimization that allows data sharding across multiple Raft groups, reducing the load on individual nodes and increasing throughput. |
+| Lease Read | An optimization that allows read-only operations to be served by followers without contacting the leader, reducing load on the leader and increasing read throughput. |
+| Hierarchical Raft | A variant of Raft designed for large-scale clusters. It introduces a two-level hierarchy to divide the problem of managing a large number of nodes into smaller, more manageable tasks. |
+| Copycat | A variant of Raft that provides a user-friendly, high-level programming model for building fault-tolerant state machines. It's designed to make it easier to use Raft in practical systems. |
+
+# Software that Uses Each:
+
+| Paxos Use Cases | Raft Use Cases |
+|-----------------|----------------|
+| Google's Chubby: Google's lock service for loosely-coupled distributed systems uses Paxos to keep its replicas consistent. | etcd: The distributed key-value store used by Kubernetes for configuration management and service discovery uses Raft. |
+| Apache ZooKeeper: Although it doesn't use Paxos directly, its ZAB protocol is heavily influenced by Paxos. It's used for coordination services like naming and configuration information. | Consul: HashiCorp's service discovery and configuration system uses Raft. |
+| Microsoft's Autopilot: This cluster management system uses Paxos for maintaining consistency. | CockroachDB: This distributed SQL database uses Multi-Raft, a variant of Raft. |
+| RAMCloud: A storage system with low-latency DRAM and Paxos for replication. | LogCabin: A distributed system building block that provides a replicated log service, using Raft as the underlying consensus algorithm. |
+| Ceph: This distributed object store and file system uses a modified version of Paxos to maintain consistency among monitors. | TiKV: A distributed transactional key-value database that is used in the TiDB system uses Raft. |
+| Corfu: A shared log design that can be used as the foundation for building distributed systems. It uses a variant of Paxos. | RethinkDB: This open-source, NoSQL database that supports JSON documents also uses Raft for consensus. |
+| IBM's General Parallel File System (GPFS): This high-performance distributed file system uses Paxos for metadata replication. | dqlite: This is a lightweight, distributed relational database that uses Raft for replication. |
+| Boxwood: A project by Microsoft Research that provides a high-level distributed programming abstraction, uses Paxos for replication. | InfluxDB: An open-source time series database, uses Raft for data replication. |
