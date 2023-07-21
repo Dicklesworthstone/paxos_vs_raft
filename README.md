@@ -85,9 +85,9 @@ ______________________________
 
 First a couple definitions:
 
-Distributed System: This refers to a system composed of multiple independent components (often referred to as nodes, servers, or machines) that interact with each other. These components may be spread across different geographical locations, and they communicate with each other over a network.
+**Distributed System:** This refers to a system composed of multiple independent components (often referred to as nodes, servers, or machines) that interact with each other. These components may be spread across different geographical locations, and they communicate with each other over a network.
 
-Consensus: Consensus is a process of agreement. In the context of a distributed system, the goal is to ensure that all functioning nodes in the system can agree on a particular value or state. This is important for maintaining the consistency of data across the system, among other uses.
+**Consensus:** Consensus is a process of agreement. In the context of a distributed system, the goal is to ensure that all functioning nodes in the system can agree on a particular value or state. This is important for maintaining the consistency of data across the system, among other uses.
 
 Now, let's take a non-technical analogy to explain this further:
 
@@ -95,24 +95,21 @@ Consider a scenario where you have several friends trying to decide on a restaur
 
 Here are the challenges you'd face, which are similar to the challenges in a distributed system:
 
-    Agreement: All friends must agree on the same restaurant. This is equivalent to all nodes in a distributed system agreeing on the same value.
+    _Agreement:_ All friends must agree on the same restaurant. This is equivalent to all nodes in a distributed system agreeing on the same value.
 
-    Single Value: The group of friends can't split up and go to different restaurants - they need to agree on one place where they all will dine. Similarly, in a distributed system, we want to ensure that all machines agree on a single value.
+    _Single Value:_ The group of friends can't split up and go to different restaurants - they need to agree on one place where they all will dine. Similarly, in a distributed system, we want to ensure that all machines agree on a single value.
 
-    Termination: The decision-making process must eventually conclude. If your friends keep debating indefinitely, they'll never get to eat. In the same way, a consensus protocol should ensure that given enough time, all functioning nodes in the system can come to a decision.
+    _Termination:_ The decision-making process must eventually conclude. If your friends keep debating indefinitely, they'll never get to eat. In the same way, a consensus protocol should ensure that given enough time, all functioning nodes in the system can come to a decision.
 
-    Fault Tolerance: It's possible that some of your friends might not respond to messages, maybe because they're busy or their phone is off. Despite this, the rest of the group still needs to make a decision. In a distributed system, the consensus protocol should be able to handle failures of some nodes and still reach a decision among the remaining ones.
+    _Fault Tolerance:_ It's possible that some of your friends might not respond to messages, maybe because they're busy or their phone is off. Despite this, the rest of the group still needs to make a decision. In a distributed system, the consensus protocol should be able to handle failures of some nodes and still reach a decision among the remaining ones.
 
-In summary, consensus protocols aim to ensure that all functioning nodes in a distributed system can agree on a single value, despite potential communication delays or node failures. They are a critical part of maintaining data consistency and reliability in distributed systems.
+Consensus protocols aim to ensure that all functioning nodes in a distributed system can agree on a single value, despite potential communication delays or node failures. They are a critical part of maintaining data consistency and reliability in distributed systems.
 
 ## Paxos:
-Paxos is a family of protocols for solving consensus in a network of unreliable or fallible processors (nodes). Conceptually, the Paxos protocol is a conversation between a proposer, acceptors, and learners. The proposer suggests a value, and the acceptors decide whether to agree or disagree. The learners then learn the chosen value.
-
-The critical point in Paxos is that any proposed value is chosen if a majority of acceptors agree. This means that if a value has been chosen, any majority of acceptors will include at least one acceptor that has agreed, preventing another value from being chosen. This makes it resilient to network partitions and node failures.
+Paxos is a family of protocols for solving consensus in a network of unreliable or fallible processors (nodes). Conceptually, the Paxos protocol is a conversation between a proposer, acceptors, and learners. The proposer suggests a value, and the acceptors decide whether to agree or disagree. The learners then learn the chosen value. The critical point in Paxos is that any proposed value is chosen if a majority of acceptors agree. This means that if a value has been chosen, any majority of acceptors will include at least one acceptor that has agreed, preventing another value from being chosen. This makes it resilient to network partitions and node failures.
 
 ## Raft:
 Raft, on the other hand, simplifies the process by electing a leader in the first phase, who then makes all the decisions until it fails. The election ensures that there's always a majority agreement on who the leader is. The leader then dictates the log entries (which correspond to state changes in the system). Other nodes replicate the leader's log, and the leader ensures that a log entry is safely replicated on a majority of the servers before considering the entry committed.
-
 
 # Theoretical Guarantees and Runtime Complexity:
 
@@ -142,6 +139,7 @@ Key:
 In summary, both Paxos and Raft provide strong safety guarantees, ensuring that the system can't commit to contradictory values. However, they handle liveness and leader election differently. Raft has the concept of leadership, which Paxos lacks in its basic form. This allows Raft to ensure liveness under certain conditions, where Paxos could potentially get stuck if proposals keep getting preempted.
 
 The run time complexities are generally linear (O(N)) with respect to the number of nodes or messages, but this can be affected by network conditions, the specific topology of the system, and how failures are handled. In general, both Paxos and Raft are designed to handle failures well and continue to provide consistency guarantees in the face of failures.
+
 
 # Protection Against Malicious Nodes:
 
@@ -196,7 +194,7 @@ Thus Paxos and Raft are equally susceptible to a group of malicious nodes if tho
 | raft-go | 2014 | Go | Less Mature |
 
 
-# Variants of Each:
+# Variants of Each Algorithm:
 
 | Paxos Variants | Description |
 |----------------|-------------|
@@ -212,6 +210,7 @@ Thus Paxos and Raft are equally susceptible to a group of malicious nodes if tho
 | Hierarchical Raft | A variant of Raft designed for large-scale clusters. It introduces a two-level hierarchy to divide the problem of managing a large number of nodes into smaller, more manageable tasks. |
 | Copycat | A variant of Raft that provides a user-friendly, high-level programming model for building fault-tolerant state machines. It's designed to make it easier to use Raft in practical systems. |
 
+
 # Software that Uses Each:
 
 | Paxos Use Cases | Raft Use Cases |
@@ -225,7 +224,8 @@ Thus Paxos and Raft are equally susceptible to a group of malicious nodes if tho
 | IBM's General Parallel File System (GPFS): This high-performance distributed file system uses Paxos for metadata replication. | dqlite: This is a lightweight, distributed relational database that uses Raft for replication. |
 | Boxwood: A project by Microsoft Research that provides a high-level distributed programming abstraction, uses Paxos for replication. | InfluxDB: An open-source time series database, uses Raft for data replication. |
 
-# History:
+
+# History of Their Development:
 
 ## Paxos
 The story of Paxos, one of the most influential consensus protocols in distributed systems, begins with Leslie Lamport, a computer scientist who had already made significant contributions to the field, including the development of the Lamport timestamp. Lamport's work on Paxos began in the late 1980s, inspired by the challenges of fault tolerance in distributed systems. He sought to create a protocol that could achieve consensus even in the presence of failures, which was no small task.
