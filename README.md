@@ -88,8 +88,6 @@ The critical point in Paxos is that any proposed value is chosen if a majority o
 ## Raft:
 Raft, on the other hand, simplifies the process by electing a leader in the first phase, who then makes all the decisions until it fails. The election ensures that there's always a majority agreement on who the leader is. The leader then dictates the log entries (which correspond to state changes in the system). Other nodes replicate the leader's log, and the leader ensures that a log entry is safely replicated on a majority of the servers before considering the entry committed.
 
-Here's a comparison:
-
 Complexity: Paxos is notoriously difficult to understand, and as a result, it is also hard to implement correctly. Raft, on the other hand, was designed to be easy to understand. Raft breaks down the consensus problem into three relatively independent subproblems and provides a robust solution for each.
 
 Leadership: In Raft, the leader is elected first and then controls the log replication. In contrast, in Paxos, any node can propose a value, which can lead to more contention and complexity.
@@ -99,3 +97,42 @@ Performance: In terms of the number of messages required to reach consensus, Pax
 Safety: Both Raft and Paxos are safe under all non-Byzantine conditions, meaning they ensure that only a single value will be chosen. The primary difference between the two protocols lies in their design goals and ease of understandability, not in their safety.
 
 In summary, while Paxos is theoretically powerful, Raft's simplicity makes it a more practical choice for real-world distributed systems. Both ensure that consensus can be reached reliably in a distributed system, even in the face of failures and network partitions.
+
+# Theoretical Guarantees and Runtime Complexity:
+
+Below is a comparison of the theoretical guarantees and typical runtime complexities of Paxos and Raft. Note that these complexities are not always strict, as they can vary depending on the specific implementation, network conditions, and other factors.
+
+|                  | Paxos                                       | Raft                                     |
+|------------------|---------------------------------------------|------------------------------------------|
+| Safety           | Guarantees safety under all conditions      | Guarantees safety under all conditions   |
+| Liveness         | Does not always guarantee liveness          | Guarantees liveness under certain conditions |
+| Completeness     | Requires a majority of nodes to be available | Requires a majority of nodes to be available |
+| Consensus Time   | O(N) in the number of messages sent         | O(N) in the number of messages sent      |
+| Node Failure     | O(N) in the number of messages              | O(N) in the number of messages          |
+| Network Failure  | O(N) in the number of messages              | O(N) in the number of messages          |
+| Leader Election  | Not applicable (no formal leaders)          | O(N) in the number of nodes             |
+| Log Replication  | Not applicable (no logs in basic Paxos)     | O(N) in the number of nodes             |
+
+Key: 
+- Safety: The property that only a value that has been proposed can be chosen, and once a value has been chosen, that choice is final.
+- Liveness: The property that nodes can make progress and eventually agree on a value.
+- Completeness: The property that every request eventually gets a response (either accept or reject).
+- Consensus Time: The time complexity to reach consensus.
+- Node Failure: The time complexity to handle a node failure.
+- Network Failure: The time complexity to handle a network failure.
+- Leader Election: The time complexity to elect a new leader (for algorithms that use leaders).
+- Log Replication: The time complexity to replicate logs across nodes (for algorithms that use logs).
+
+In summary, both Paxos and Raft provide strong safety guarantees, ensuring that the system can't commit to contradictory values. However, they handle liveness and leader election differently. Raft has the concept of leadership, which Paxos lacks in its basic form. This allows Raft to ensure liveness under certain conditions, where Paxos could potentially get stuck if proposals keep getting preempted.
+
+The run time complexities are generally linear (O(N)) with respect to the number of nodes or messages, but this can be affected by network conditions, the specific topology of the system, and how failures are handled. In general, both Paxos and Raft are designed to handle failures well and continue to provide consistency guarantees in the face of failures.
+
+# Protection Against Malicious Nodes:
+
+Both Paxos and Raft use a majority-based system to reach consensus, which means they can tolerate up to (N-1)/2 faulty nodes, where N is the total number of nodes in the system. In this context, a faulty node could be one that is not functioning correctly or is behaving maliciously. If an attacker controls more than half the nodes, they can potentially disrupt the consensus process or manipulate the chosen value.
+
+However, it's important to note that these consensus algorithms were designed to handle faulty nodes (ones that crash or are slow), not necessarily malicious nodes that behave arbitrarily or actively try to subvert the system. This is a different problem known as Byzantine fault tolerance.
+
+Byzantine fault tolerance (BFT) is the property of a system to function correctly even if some components are faulty or malicious. There are variations of Paxos and Raft, like Byzantine Paxos and Braft, that are designed to handle Byzantine faults. These algorithms use more complex mechanisms to ensure safety and liveness in the presence of malicious nodes, but also require more resources (like a higher number of nodes or more rounds of communication).
+
+So to answer your question, both Paxos and Raft are equally susceptible to a group of malicious nodes if those nodes form a majority. But in the presence of Byzantine faults, neither basic Paxos nor Raft provides guarantees; for that, you would need to use a Byzantine fault-tolerant consensus algorithm.
