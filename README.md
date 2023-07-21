@@ -95,13 +95,13 @@ Consider a scenario where you have several friends trying to decide on a restaur
 
 Here are the challenges you'd face, which are similar to the challenges in a distributed system:
 
-    _Agreement:_ All friends must agree on the same restaurant. This is equivalent to all nodes in a distributed system agreeing on the same value.
+_Agreement:_ All friends must agree on the same restaurant. This is equivalent to all nodes in a distributed system agreeing on the same value.
 
-    _Single Value:_ The group of friends can't split up and go to different restaurants - they need to agree on one place where they all will dine. Similarly, in a distributed system, we want to ensure that all machines agree on a single value.
+_Single Value:_ The group of friends can't split up and go to different restaurants - they need to agree on one place where they all will dine. Similarly, in a distributed system, we want to ensure that all machines agree on a single value.
 
-    _Termination:_ The decision-making process must eventually conclude. If your friends keep debating indefinitely, they'll never get to eat. In the same way, a consensus protocol should ensure that given enough time, all functioning nodes in the system can come to a decision.
+_Termination:_ The decision-making process must eventually conclude. If your friends keep debating indefinitely, they'll never get to eat. In the same way, a consensus protocol should ensure that given enough time, all functioning nodes in the system can come to a decision.
 
-    _Fault Tolerance:_ It's possible that some of your friends might not respond to messages, maybe because they're busy or their phone is off. Despite this, the rest of the group still needs to make a decision. In a distributed system, the consensus protocol should be able to handle failures of some nodes and still reach a decision among the remaining ones.
+_Fault Tolerance:_ It's possible that some of your friends might not respond to messages, maybe because they're busy or their phone is off. Despite this, the rest of the group still needs to make a decision. In a distributed system, the consensus protocol should be able to handle failures of some nodes and still reach a decision among the remaining ones.
 
 Consensus protocols aim to ensure that all functioning nodes in a distributed system can agree on a single value, despite potential communication delays or node failures. They are a critical part of maintaining data consistency and reliability in distributed systems.
 
