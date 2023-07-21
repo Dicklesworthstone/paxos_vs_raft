@@ -1,4 +1,4 @@
-# High Level Comparison:
+# High Level Comparison of the Paxos and Raft Consensus Algorithms:
 
 | Step | Paxos  | Raft  |
 |------|--------|-------|
@@ -11,11 +11,11 @@
 | **Learn** | A value is chosen when a proposer issues an 'accept' request and a majority of acceptors respond. | Once the leader learns that a log entry is stored on a majority of servers, it applies the entry to its state machine and returns the result of that execution to the client. |
 | **Reconciliation** | If a proposer's 'prepare' request fails because some acceptors have already accepted another proposal, the proposer can issue a new 'prepare' request with a higher number and the value of the highest-numbered proposal among the responses. | The leader ensures that entries committed on former leader are copied to the new leader's log entries. |
 
+
 ______________________________
 
-# More Detailed Comparison:
 
-I understand that you're looking for more details. Here's a more in-depth look at each phase:
+# More Detailed Comparison:
 
 **Initialization**
 
