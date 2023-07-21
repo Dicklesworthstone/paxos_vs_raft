@@ -75,9 +75,8 @@ ______________________________
 | Detail | Paxos | Raft |
 |--------|-------|------|
 | Reconciliation after failure | If a proposer's 'prepare' request fails because acceptors have accepted another proposal, the proposer can issue a new 'prepare' request with a higher number and the value of the highest-numbered proposal from the responses. | The leader handles inconsistencies between its log and those of followers by forcing followers to duplicate its own log entries. |
-| Reconciliation after restart | Paxos does not inherently handle restarts. It relies on external mechanisms to store and retrieve state. | Raft leaders maintain a 'nextIndex' for each follower, which is the index of
+| Reconciliation after restart | Paxos does not inherently handle restarts. It relies on external mechanisms to store and retrieve state. | Raft leaders maintain a 'nextIndex' for each follower, which is the index of the next log entry the leader will send to that follower. When a leader restarts, it initializes all nextIndex values to the last index in its log. |
 
- the next log entry the leader will send to that follower. When a leader restarts, it initializes all nextIndex values to the last index in its log. |
 
 # Background
 
