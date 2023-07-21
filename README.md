@@ -1,3 +1,38 @@
+# Background
+
+## The Problem Consensus Algorithms Attempt to Solve:
+
+First a couple definitions:
+
+**Distributed System:** This refers to a system composed of multiple independent components (often referred to as nodes, servers, or machines) that interact with each other. These components may be spread across different geographical locations, and they communicate with each other over a network.
+
+**Consensus:** Consensus is a process of agreement. In the context of a distributed system, the goal is to ensure that all functioning nodes in the system can agree on a particular value or state. This is important for maintaining the consistency of data across the system, among other uses.
+
+Now, let's take a non-technical analogy to explain this further:
+
+Consider a scenario where you have several friends trying to decide on a restaurant for dinner. Each friend represents a node in a distributed system, and the restaurant choice represents the value that needs agreement.
+
+Here are the challenges you'd face, which are similar to the challenges in a distributed system:
+
+_Agreement:_ All friends must agree on the same restaurant. This is equivalent to all nodes in a distributed system agreeing on the same value.
+
+_Single Value:_ The group of friends can't split up and go to different restaurants - they need to agree on one place where they all will dine. Similarly, in a distributed system, we want to ensure that all machines agree on a single value.
+
+_Termination:_ The decision-making process must eventually conclude. If your friends keep debating indefinitely, they'll never get to eat. In the same way, a consensus protocol should ensure that given enough time, all functioning nodes in the system can come to a decision.
+
+_Fault Tolerance:_ It's possible that some of your friends might not respond to messages, maybe because they're busy or their phone is off. Despite this, the rest of the group still needs to make a decision. In a distributed system, the consensus protocol should be able to handle failures of some nodes and still reach a decision among the remaining ones.
+
+Consensus protocols aim to ensure that all functioning nodes in a distributed system can agree on a single value, despite potential communication delays or node failures. They are a critical part of maintaining data consistency and reliability in distributed systems.
+
+## Paxos:
+Paxos is a family of protocols for solving consensus in a network of unreliable or fallible processors (nodes). Conceptually, the Paxos protocol is a conversation between a proposer, acceptors, and learners. The proposer suggests a value, and the acceptors decide whether to agree or disagree. The learners then learn the chosen value. The critical point in Paxos is that any proposed value is chosen if a majority of acceptors agree. This means that if a value has been chosen, any majority of acceptors will include at least one acceptor that has agreed, preventing another value from being chosen. This makes it resilient to network partitions and node failures.
+
+## Raft:
+Raft, on the other hand, simplifies the process by electing a leader in the first phase, who then makes all the decisions until it fails. The election ensures that there's always a majority agreement on who the leader is. The leader then dictates the log entries (which correspond to state changes in the system). Other nodes replicate the leader's log, and the leader ensures that a log entry is safely replicated on a majority of the servers before considering the entry committed.
+
+______________________________
+
+
 # High Level Comparison of the Paxos and Raft Consensus Algorithms:
 
 | Step | Paxos  | Raft  |
@@ -79,37 +114,6 @@ ______________________________
 
 ______________________________
 
-# Background
-
-## The Problem Consensus Algorithms Attempt to Solve:
-
-First a couple definitions:
-
-**Distributed System:** This refers to a system composed of multiple independent components (often referred to as nodes, servers, or machines) that interact with each other. These components may be spread across different geographical locations, and they communicate with each other over a network.
-
-**Consensus:** Consensus is a process of agreement. In the context of a distributed system, the goal is to ensure that all functioning nodes in the system can agree on a particular value or state. This is important for maintaining the consistency of data across the system, among other uses.
-
-Now, let's take a non-technical analogy to explain this further:
-
-Consider a scenario where you have several friends trying to decide on a restaurant for dinner. Each friend represents a node in a distributed system, and the restaurant choice represents the value that needs agreement.
-
-Here are the challenges you'd face, which are similar to the challenges in a distributed system:
-
-_Agreement:_ All friends must agree on the same restaurant. This is equivalent to all nodes in a distributed system agreeing on the same value.
-
-_Single Value:_ The group of friends can't split up and go to different restaurants - they need to agree on one place where they all will dine. Similarly, in a distributed system, we want to ensure that all machines agree on a single value.
-
-_Termination:_ The decision-making process must eventually conclude. If your friends keep debating indefinitely, they'll never get to eat. In the same way, a consensus protocol should ensure that given enough time, all functioning nodes in the system can come to a decision.
-
-_Fault Tolerance:_ It's possible that some of your friends might not respond to messages, maybe because they're busy or their phone is off. Despite this, the rest of the group still needs to make a decision. In a distributed system, the consensus protocol should be able to handle failures of some nodes and still reach a decision among the remaining ones.
-
-Consensus protocols aim to ensure that all functioning nodes in a distributed system can agree on a single value, despite potential communication delays or node failures. They are a critical part of maintaining data consistency and reliability in distributed systems.
-
-## Paxos:
-Paxos is a family of protocols for solving consensus in a network of unreliable or fallible processors (nodes). Conceptually, the Paxos protocol is a conversation between a proposer, acceptors, and learners. The proposer suggests a value, and the acceptors decide whether to agree or disagree. The learners then learn the chosen value. The critical point in Paxos is that any proposed value is chosen if a majority of acceptors agree. This means that if a value has been chosen, any majority of acceptors will include at least one acceptor that has agreed, preventing another value from being chosen. This makes it resilient to network partitions and node failures.
-
-## Raft:
-Raft, on the other hand, simplifies the process by electing a leader in the first phase, who then makes all the decisions until it fails. The election ensures that there's always a majority agreement on who the leader is. The leader then dictates the log entries (which correspond to state changes in the system). Other nodes replicate the leader's log, and the leader ensures that a log entry is safely replicated on a majority of the servers before considering the entry committed.
 
 # Theoretical Guarantees and Runtime Complexity:
 
