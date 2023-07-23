@@ -1,3 +1,5 @@
+_**Disclaimer**: Although I came up with the overall structure of the tables and the various section topics, GPT4 created all the contents, and then I used Claude2 to review it for accuracy._
+
 # Background
 
 ## The Problem Consensus Algorithms Attempt to Solve:
