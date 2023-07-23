@@ -216,21 +216,6 @@ Thus Paxos and Raft are equally susceptible to a group of malicious nodes if tho
 | Hierarchical Raft | A variant of Raft designed for large-scale clusters. It introduces a two-level hierarchy to divide the problem of managing a large number of nodes into smaller, more manageable tasks. |
 | Copycat | A variant of Raft that provides a user-friendly, high-level programming model for building fault-tolerant state machines. It's designed to make it easier to use Raft in practical systems. |
 
-
-# Software that Uses Each:
-
-| Paxos Use Cases | Raft Use Cases |
-|-----------------|----------------|
-| Google's Chubby: Google's lock service for loosely-coupled distributed systems uses Paxos to keep its replicas consistent. | etcd: The distributed key-value store used by Kubernetes for configuration management and service discovery uses Raft. |
-| Apache ZooKeeper: Although it doesn't use Paxos directly, its ZAB protocol is heavily influenced by Paxos. It's used for coordination services like naming and configuration information. | Consul: HashiCorp's service discovery and configuration system uses Raft. |
-| Microsoft's Autopilot: This cluster management system uses Paxos for maintaining consistency. | CockroachDB: This distributed SQL database uses Multi-Raft, a variant of Raft. |
-| RAMCloud: A storage system with low-latency DRAM and Paxos for replication. | LogCabin: A distributed system building block that provides a replicated log service, using Raft as the underlying consensus algorithm. |
-| Ceph: This distributed object store and file system uses a modified version of Paxos to maintain consistency among monitors. | TiKV: A distributed transactional key-value database that is used in the TiDB system uses Raft. |
-| Corfu: A shared log design that can be used as the foundation for building distributed systems. It uses a variant of Paxos. | RethinkDB: This open-source, NoSQL database that supports JSON documents also uses Raft for consensus. |
-| IBM's General Parallel File System (GPFS): This high-performance distributed file system uses Paxos for metadata replication. | dqlite: This is a lightweight, distributed relational database that uses Raft for replication. |
-| Boxwood: A project by Microsoft Research that provides a high-level distributed programming abstraction, uses Paxos for replication. | InfluxDB: An open-source time series database, uses Raft for data replication. |
-
-
 # History of Their Development:
 
 ## Paxos
