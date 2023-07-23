@@ -172,34 +172,6 @@ Thus Paxos and Raft are equally susceptible to a group of malicious nodes if tho
 | 9 | Supports many proposers. Paxos can work with many proposers, which can be useful in certain scenarios. | Requires careful handling of failure scenarios. Paxos requires careful handling of failure scenarios to ensure progress. | Progress even in failure scenarios. Raft's leader-based approach allows progress even in some failure scenarios. | Requires more resources for a given level of fault tolerance. Raft typically requires more resources to achieve the same level of fault tolerance as Paxos. |
 | 10 | Can handle message loss. Paxos is resilient to message loss. | Requires majority of nodes to be operational. Paxos requires a majority of nodes to be operational to make progress. | Requires fewer messages for consensus. Raft requires fewer messages to reach consensus than Paxos. | Requires regular leader heartbeats. Raft requires regular leader heartbeats, which can increase network load. |
 
-# Implementations:
-
-**Paxos Implementations:**
-
-| Name | Year First Released | Implementation Language | Level of Maturity |
-|------|---------------------|-------------------------|-------------------|
-| Google's Chubby | 2006 | C++ | Mature |
-| Apache ZooKeeper | 2008 | Java | Mature |
-| Libpaxos | 2010 | C | Mature |
-| JPaxos | 2012 | Java | Mature |
-| Microsoft's PAXOS.NET | 2014 | C# | Mature |
-| paxos-go | 2015 | Go | Less Mature |
-| rust-paxos | 2017 | Rust | Less Mature |
-
-
-**Raft Implementations:**
-
-| Name | Year First Released | Implementation Language | Level of Maturity |
-|------|---------------------|-------------------------|-------------------|
-| etcd | 2013 | Go | Mature |
-| Consul | 2014 | Go | Mature |
-| LogCabin | 2014 | C++ | Mature |
-| Dragonboat | 2018 | Go | Mature |
-| raft-rs | 2018 | Rust | Mature |
-| Barge | 2015 | Java | Mature |
-| raft-go | 2014 | Go | Less Mature |
-
-
 # Variants of Each Algorithm:
 
 | Paxos Variants | Description |
